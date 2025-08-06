@@ -14,7 +14,7 @@
     
     {{-- Título --}}
     <h1 class="text-5xl md:text-6xl font-extrabold">
-      Subiendo datos…
+      En construcción...
     </h1>
 
     {{-- Descripción --}}

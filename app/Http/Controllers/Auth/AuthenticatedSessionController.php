@@ -53,7 +53,7 @@ class AuthenticatedSessionController extends Controller
     private function redirectUserByRole($user): RedirectResponse
     {
         if ($user->isAdmin()) {
-            return redirect()->intended(route('admin.home'));
+            return redirect()->intended(route('admin.productos.productos'));
         }
 
         return redirect()->intended(route('home'));

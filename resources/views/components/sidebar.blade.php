@@ -54,68 +54,70 @@
                     <span class="font-medium" x-show="!sidebarCollapsed">Inicio</span>
                 </a>
                 
-                {{-- Menú Productos con submenú --}}
-                <div class="relative">
-                    <button @click="productosMenuOpen = !productosMenuOpen" 
-                            class="w-full flex items-center justify-between px-4 py-3 text-stone-700 rounded-lg transition-all duration-200 group {{ request()->routeIs('heladeria.productos.*') ? 'bg-stone-100 text-stone-800' : 'hover:bg-stone-50' }}">
-                        <div class="flex items-center">
-                            <svg class="w-5 h-5" :class="sidebarCollapsed ? 'mx-auto' : 'mr-3'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                {{-- Menú Productos con submenú (solo para usuarios no autenticados o no admin) --}}
+                @if(!auth()->check() || (auth()->check() && !auth()->user()->isAdmin()))
+                    <div class="relative">
+                        <button @click="productosMenuOpen = !productosMenuOpen" 
+                                class="w-full flex items-center justify-between px-4 py-3 text-stone-700 rounded-lg transition-all duration-200 group {{ request()->routeIs('heladeria.productos.*') ? 'bg-stone-100 text-stone-800' : 'hover:bg-stone-50' }}">
+                            <div class="flex items-center">
+                                <svg class="w-5 h-5" :class="sidebarCollapsed ? 'mx-auto' : 'mr-3'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                </svg>
+                                <span class="font-medium" x-show="!sidebarCollapsed">Productos</span>
+                            </div>
+                            <svg class="w-4 h-4 transition-transform duration-200" 
+                                 :class="productosMenuOpen ? 'rotate-180' : ''"
+                                 x-show="!sidebarCollapsed"
+                                 fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                             </svg>
-                            <span class="font-medium" x-show="!sidebarCollapsed">Productos</span>
+                        </button>
+                        
+                        {{-- Submenú de Productos --}}
+                        <div x-show="productosMenuOpen && !sidebarCollapsed" 
+                             x-transition:enter="transition ease-out duration-200"
+                             x-transition:enter-start="opacity-0 transform scale-95"
+                             x-transition:enter-end="opacity-100 transform scale-100"
+                             x-transition:leave="transition ease-in duration-150"
+                             x-transition:leave-start="opacity-100 transform scale-100"
+                             x-transition:leave-end="opacity-0 transform scale-95"
+                             class="mt-2 ml-4 space-y-1">
+                            
+                            <a href="#" {{-- Aquí puedes agregar la ruta general de productos --}}
+                               class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                </svg>
+                                <span class="font-medium">Todos los Productos</span>
+                            </a>
+                            
+                            <a href="#" {{-- Ruta para helados --}}
+                               class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                </svg>
+                                <span class="font-medium">Helados</span>
+                            </a>
+                            
+                            <a href="#" {{-- Ruta para paletas --}}
+                               class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                                </svg>
+                                <span class="font-medium">Paletas</span>
+                            </a>
+                            
+                            <a href="#" {{-- Ruta para malteadas --}}
+                               class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
+                                <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                </svg>
+                                <span class="font-medium">Malteadas</span>
+                            </a>
+                            
                         </div>
-                        <svg class="w-4 h-4 transition-transform duration-200" 
-                             :class="productosMenuOpen ? 'rotate-180' : ''"
-                             x-show="!sidebarCollapsed"
-                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-                        </svg>
-                    </button>
-                    
-                    {{-- Submenú de Productos --}}
-                    <div x-show="productosMenuOpen && !sidebarCollapsed" 
-                         x-transition:enter="transition ease-out duration-200"
-                         x-transition:enter-start="opacity-0 transform scale-95"
-                         x-transition:enter-end="opacity-100 transform scale-100"
-                         x-transition:leave="transition ease-in duration-150"
-                         x-transition:leave-start="opacity-100 transform scale-100"
-                         x-transition:leave-end="opacity-0 transform scale-95"
-                         class="mt-2 ml-4 space-y-1">
-                        
-                        <a href="#" {{-- Aquí puedes agregar la ruta general de productos --}}
-                           class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
-                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
-                            </svg>
-                            <span class="font-medium">Todos los Productos</span>
-                        </a>
-                        
-                        <a href="#" {{-- Ruta para helados --}}
-                           class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
-                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
-                            </svg>
-                            <span class="font-medium">Helados</span>
-                        </a>
-                        
-                        <a href="#" {{-- Ruta para paletas --}}
-                           class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
-                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
-                            </svg>
-                            <span class="font-medium">Paletas</span>
-                        </a>
-                        
-                        <a href="#" {{-- Ruta para malteadas --}}
-                           class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
-                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-                            </svg>
-                            <span class="font-medium">Malteadas</span>
-                        </a>
-                        
                     </div>
-                </div>
+                @endif
                 
                 <a href="{{ route('heladeria.sabores') }}" 
                    class="flex items-center px-4 py-3 text-stone-700 rounded-lg transition-all duration-200 group {{ request()->routeIs('heladeria.sabores') ? 'bg-stone-100 text-stone-800' : 'hover:bg-stone-50' }}">
@@ -195,38 +197,75 @@
                                 
                                 {{-- Productos Admin con submenú --}}
                                 <div class="relative">
-                                    <a href="{{route('admin.productos.productos')}}" 
-                                       class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.*') ? 'bg-stone-50 text-stone-800' : 'hover:bg-stone-50' }}">
-                                        <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                    <button @click="productosMenuOpen = !productosMenuOpen" 
+                                            class="w-full flex items-center justify-between px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.*') ? 'bg-stone-50 text-stone-800' : 'hover:bg-stone-50' }}">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                            </svg>
+                                            <span class="font-medium">Productos</span>
+                                        </div>
+                                        <svg class="w-4 h-4 transition-transform duration-200" 
+                                             :class="productosMenuOpen ? 'rotate-180' : ''"
+                                             fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                                         </svg>
-                                        <span class="font-medium">Gestión Productos</span>
-                                    </a>
+                                    </button>
                                     
-                                    {{-- Opciones específicas de productos admin --}}
-                                    <div class="ml-6 mt-1 space-y-1">
+                                    {{-- Submenú de Productos Admin --}}
+                                    <div x-show="productosMenuOpen" 
+                                         x-transition:enter="transition ease-out duration-200"
+                                         x-transition:enter-start="opacity-0 transform scale-95"
+                                         x-transition:enter-end="opacity-100 transform scale-100"
+                                         x-transition:leave="transition ease-in duration-150"
+                                         x-transition:leave-start="opacity-100 transform scale-100"
+                                         x-transition:leave-end="opacity-0 transform scale-95"
+                                         class="mt-2 ml-4 space-y-1">
+                                        
+                                        <a href="{{route('admin.productos.productos')}}" 
+                                           class="flex items-center px-4 py-2 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.productos') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
+                                            <svg class="w-3 h-3 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                                            </svg>
+                                            <span class="font-medium">Todos los Productos</span>
+                                        </a>
+                                        
                                         <a href="{{ route('admin.productos.helados') }}" 
-                                           class="flex items-center px-3 py-1 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.helados') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
-                                            <span>• Helados</span>
+                                           class="flex items-center px-4 py-2 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.helados') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
+                                            <svg class="w-3 h-3 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                                            </svg>
+                                            <span class="font-medium">Helados</span>
                                         </a>
+                                        
                                         <a href="{{ route('admin.productos.paletas') }}" 
-                                           class="flex items-center px-3 py-1 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.paletas') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
-                                            <span>• Paletas</span>
+                                           class="flex items-center px-4 py-2 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.paletas') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
+                                            <svg class="w-3 h-3 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"/>
+                                            </svg>
+                                            <span class="font-medium">Paletas</span>
                                         </a>
+                                        
                                         <a href="{{ route('admin.productos.malteadas') }}" 
-                                           class="flex items-center px-3 py-1 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.malteadas') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
-                                            <span>• Malteadas</span>
+                                           class="flex items-center px-4 py-2 text-xs text-stone-500 rounded-lg transition-all duration-200 group {{ request()->routeIs('admin.productos.malteadas') ? 'bg-stone-50 text-stone-700' : 'hover:bg-stone-50' }}">
+                                            <svg class="w-3 h-3 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                                            </svg>
+                                            <span class="font-medium">Malteadas</span>
                                         </a>
+                                        
                                     </div>
                                 </div>
                                 
-                                <a href="#" 
+                                {{-- OPCIONES DE REPORTES COMENTADA --}}
+                                
+                                {{-- <a href="#" 
                                    class="flex items-center px-4 py-2 text-sm text-stone-600 rounded-lg transition-all duration-200 group hover:bg-stone-50">
                                     <svg class="w-4 h-4 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                                     </svg>
                                     <span class="font-medium">Reportes</span>
-                                </a>
+                                </a> --}}
                                 
                             </div>
                         </div>
