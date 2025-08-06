@@ -162,7 +162,7 @@
                         </div>
                     @endif
 
-                    <form action="" method="POST" class="space-y-6">
+                    <form action="" method="" class="space-y-6">
                         @csrf
                         
                         {{-- Nombre --}}
@@ -229,7 +229,7 @@
                         </div>
 
                         {{-- Botón de Envío --}}
-                        <button type="submit" 
+                        <button 
                                 class="w-full px-8 py-4 bg-stone-800 text-white font-semibold rounded-lg hover:bg-stone-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-stone-800 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
                             <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
